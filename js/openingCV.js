@@ -18,7 +18,7 @@ resumeButtons.forEach(function (button) {
       if ("download" in downloadLink) {
         downloadLink.click();
       } else {
-        window.location.href = "../assets/CV.pdf";
+        window.location.href = "../assets/CV-S.pdf";
       }
     } else {
       window.open("../assets/CV.pdf", "_blank");
