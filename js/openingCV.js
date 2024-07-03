@@ -13,7 +13,7 @@ resumeButtons.forEach(function (button) {
     if (isMobileDevice()) {
       var downloadLink = document.createElement("a");
       downloadLink.href = "../assets/CV.pdf";
-      downloadLink.download = "CV.pdf";
+      downloadLink.download = "CV-S.pdf";
 
       if ("download" in downloadLink) {
         downloadLink.click();
@@ -21,7 +21,7 @@ resumeButtons.forEach(function (button) {
         window.location.href = "../assets/CV-S.pdf";
       }
     } else {
-      window.open("../assets/CV.pdf", "_blank");
+      window.open("../assets/CV-S.pdf", "_blank");
     }
   });
 });
