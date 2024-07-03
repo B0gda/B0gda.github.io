@@ -12,7 +12,7 @@ resumeButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     if (isMobileDevice()) {
       var downloadLink = document.createElement("a");
-      downloadLink.href = "../assets/CV.pdf";
+      downloadLink.href = "../assets/CV-S.pdf";
       downloadLink.download = "CV-S.pdf";
 
       if ("download" in downloadLink) {
