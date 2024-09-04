@@ -13,16 +13,16 @@ resumeButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     if (isMobileDevice()) {
       var downloadLink = document.createElement("a");
-      downloadLink.href = "../assets/CV-RU.pdf";
-      downloadLink.download = "CV-RU.pdf";
+      downloadLink.href = "../assets/CV-RU-S.pdf";
+      downloadLink.download = "CV-RU-S.pdf";
 
       if ("download" in downloadLink) {
         downloadLink.click();
       } else {
-        window.location.href = "../assets/CV-RU.pdf";
+        window.location.href = "../assets/CV-RU-S.pdf";
       }
     } else {
-      window.open("../assets/CV-RU.pdf", "_blank");
+      window.open("../assets/CV-RU-S.pdf", "_blank");
     }
   });
 });
