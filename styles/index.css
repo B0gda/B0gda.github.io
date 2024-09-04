@@ -644,7 +644,7 @@ span.home-banner-sub-heading.bodySmall p {
   width: 24px;
   height: 24px;
 }
-@media (max-width: 1120px) {
+@media (max-width: 991px) {
   .home-hero1 {
     flex-direction: column;
   }
@@ -672,7 +672,7 @@ span.home-banner-sub-heading.bodySmall p {
   }
 }
 /*menu pop up*/
-@media (max-width: 1000px) {
+@media (max-width: 1120px) {
   .home-navbar-interactive {
     padding-left: var(--dl-space-space-twounits);
     padding-right: var(--dl-space-space-twounits);
@@ -749,6 +749,13 @@ span.home-banner-sub-heading.bodySmall p {
   .home-text45 {
     margin-bottom: var(--dl-space-space-oneandhalfunits);
   }
+}
+@media (min-width: 550px) {
+    .buttonFilled {
+        display: block;
+      margin-right: 20px;
+        margin-left: 20px;
+    }
 }
 @media (max-width: 479px) {
   .home-navbar-interactive {
