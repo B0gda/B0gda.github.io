@@ -1,4 +1,5 @@
 let resumeButtons = document.querySelectorAll("#resumeButton");
+let resumeButtonsEng = document.querySelectorAll("#resumeButtonEng");
 let portfolioElement = document.querySelectorAll("#portfolioElement");
 let viewprojectButton = document.querySelector(".viewProjectsButton");
 
@@ -12,16 +13,34 @@ resumeButtons.forEach(function (button) {
   button.addEventListener("click", function () {
     if (isMobileDevice()) {
       var downloadLink = document.createElement("a");
-      downloadLink.href = "../assets/CV-S.pdf";
-      downloadLink.download = "CV-S.pdf";
+      downloadLink.href = "../assets/CV-RU.pdf";
+      downloadLink.download = "CV-RU.pdf";
 
       if ("download" in downloadLink) {
         downloadLink.click();
       } else {
-        window.location.href = "../assets/CV-S.pdf";
+        window.location.href = "../assets/CV-RU.pdf";
       }
     } else {
-      window.open("../assets/CV-S.pdf", "_blank");
+      window.open("../assets/CV-RU.pdf", "_blank");
+    }
+  });
+});
+
+resumeButtonsEng.forEach(function (button) {
+  button.addEventListener("click", function () {
+    if (isMobileDevice()) {
+      var downloadLink = document.createElement("a");
+      downloadLink.href = "../assets/CV-ENG.pdf";
+      downloadLink.download = "CV-ENG.pdf";
+
+      if ("download" in downloadLink) {
+        downloadLink.click();
+      } else {
+        window.location.href = "../assets/CV-ENG.pdf";
+      }
+    } else {
+      window.open("../assets/CV-ENG.pdf", "_blank");
     }
   });
 });
