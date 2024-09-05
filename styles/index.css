@@ -675,7 +675,7 @@ span.home-banner-sub-heading.bodySmall p {
   }
 }
 /*menu pop up*/
-@media (max-width: 1120px) {
+@media (max-width: 1340px) {
   .home-navbar-interactive {
     padding-left: var(--dl-space-space-twounits);
     padding-right: var(--dl-space-space-twounits);
