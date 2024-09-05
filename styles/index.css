@@ -350,10 +350,12 @@ span.home-banner-sub-heading.bodySmall p {
   margin-left: var(--dl-space-space-twounits);
 }
 .home-buttons {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 13px;
+    flex: inherit;
 }
 .home-login {
   margin-right: 32px;
@@ -431,9 +433,9 @@ span.home-banner-sub-heading.bodySmall p {
     height: 150px;
 }
 .buttonFilled {
-  cursor: pointer;
-  margin-right: 20px;
-  margin-left: 20px;
+    cursor: pointer;
+/*     margin-right: 20px; */
+    /* margin-left: 20px; */
 }
 .cursPoint {
   cursor: pointer;
@@ -754,8 +756,8 @@ span.home-banner-sub-heading.bodySmall p {
 @media (min-width: 550px) {
     .buttonFilled {
         display: block;
-      margin-right: 20px;
-        margin-left: 20px;
+/*         margin-right: 20px; */
+        /* margin-left: 20px; */
     }
 }
 @media (max-width: 479px) {
