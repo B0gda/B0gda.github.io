@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Error 706</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #172031;
+        --primary: #ffe285;
+        --grid-gap: 6px;
+        --blank: #233045;
+        --c2: #374562;
+        --c4: #445479;
+        --c8: #50628f;
+        --c16: #59709e;
+        --c32: #628eaa;
+        --c64: #6ba7b5;
+        --c128: #74c0c1;
+        --c256: #7ed9cc;
+        --c512: #88f0d3;
+        --c1024: #b8f3c9;
+        --c2048: #ffe285;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        background: var(--bg);
+        color: var(--primary);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        overscroll-behavior: none;
+      }
+      h1 {
+        margin: 0.5em 0 0.25em;
+        font: clamp(28px, 7vw, 64px) "VT323", monospace;
+      }
+      #result {
+        font-size: 1.1rem;
+        color: #ccc;
+        margin: 0.2em 0 0.8em;
+      }
+      .container {
+        width: min(92vmin, 460px);
+      }
+      @media (min-width: 768px) {
+        .container {
+          width: min(92vmin, 690px);
+        }
+      }
+      .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .score-container {
+        background: #1e2537;
+        border-radius: 4px;
+        padding: 0.4em 1em;
+      }
+      .score-title {
+        font-size: 0.8rem;
+        color: #aaa;
+        text-transform: uppercase;
+      }
+      #score {
+        font: 1.6rem "VT323", monospace;
+        color: var(--primary);
+      }
+
+      .grid {
+        position: relative;
+        aspect-ratio: 1/1;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: var(--grid-gap);
+        background: #101828;
+        padding: var(--grid-gap);
+        border-radius: 6px;
+        margin-top: 20px;
+        touch-action: none;
+      }
+      .grid div {
+        width: 100%;
+        aspect-ratio: 1/1;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font: clamp(48px, 5vw, 42px) "VT323", monospace;
+        color: #fff;
+        transition: 0.2s;
+      }
+      [v="0"] {
+        background: var(--blank);
+      }
+      [v="2"] {
+        background: var(--c2);
+      }
+      [v="4"] {
+        background: var(--c4);
+      }
+      [v="8"] {
+        background: var(--c8);
+      }
+      [v="16"] {
+        background: var(--c16);
+      }
+      [v="32"] {
+        background: var(--c32);
+      }
+      [v="64"] {
+        background: var(--c64);
+      }
+      [v="128"] {
+        background: var(--c128);
+      }
+      [v="256"] {
+        background: var(--c256);
+      }
+      [v="512"] {
+        background: var(--c512);
+      }
+      [v="1024"] {
+        background: var(--c1024);
+      }
+      [v="2048"] {
+        background: var(--c2048);
+        color: #172031;
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+      .overlay-content {
+        text-align: center;
+      }
+      .overlay-content h2 {
+        font: 3rem "VT323", monospace;
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+      .overlay-btn {
+        background: var(--primary);
+        color: #172031;
+        border: none;
+        font: 2rem "VT323", monospace;
+        padding: 0.4em 1em;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Error 706</h1>
+    <div class="container">
+      <div class="info">
+        <span id="result">Join the numbers and get to 2048!</span>
+        <div class="score-container">
+          <div class="score-title">score</div>
+          <span id="score">0</span>
+        </div>
+      </div>
+      <div class="grid"></div>
+    </div>
+
+    <div class="overlay" id="winOverlay">
+      <div class="overlay-content">
+        <h2>YOU WIN!</h2>
+        <button class="overlay-btn" id="btnWinRestart">Again</button>
+      </div>
+    </div>
+
+    <div class="overlay" id="loseOverlay">
+      <div class="overlay-content">
+        <h2>GAME OVER</h2>
+        <button class="overlay-btn" id="btnLoseRestart">Again</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const grid = document.querySelector(".grid"),
+          scoreEl = document.getElementById("score"),
+          winO = document.getElementById("winOverlay"),
+          loseO = document.getElementById("loseOverlay"),
+          btnWin = document.getElementById("btnWinRestart"),
+          btnLose = document.getElementById("btnLoseRestart");
+
+        const w = 4,
+          cells = [],
+          target = 2048;
+        let score = 0,
+          startX,
+          startY,
+          playing = true;
+
+        const paint = (c, v) => {
+          c.setAttribute("v", v);
+          c.textContent = v || "";
+        };
+        const empties = () => cells.filter((c) => +c.getAttribute("v") === 0);
+        const addTwo = () => {
+          const e = empties();
+          if (e.length) paint(e[(Math.random() * e.length) | 0], 2);
+        };
+        const row = (r) => cells.slice(r * w, (r + 1) * w);
+        const col = (c) => [0, 1, 2, 3].map((r) => cells[r * w + c]);
+
+        (function init() {
+          for (let i = 0; i < w * w; i++) {
+            const d = document.createElement("div");
+            paint(d, 0);
+            grid.appendChild(d);
+            cells.push(d);
+          }
+          addTwo();
+          addTwo();
+        })();
+
+        function slide(line, rev = false) {
+          let v = line.map((c) => +c.getAttribute("v"));
+          if (rev) v.reverse();
+          const a = v.filter((n) => n);
+          for (let i = 0; i < a.length - 1; i++) {
+            if (a[i] === a[i + 1]) {
+              a[i] *= 2;
+              score += a[i];
+              a[i + 1] = 0;
+            }
+          }
+          const dense = [...a.filter((n) => n)];
+          while (dense.length < 4) dense.push(0);
+          if (rev) dense.reverse();
+          line.forEach((c, i) => paint(c, dense[i]));
+        }
+        function move(dir) {
+          if (!playing) return;
+          const before = cells.map((c) => c.getAttribute("v")).join("");
+          if (dir === "left" || dir === "right")
+            for (let r = 0; r < 4; r++) slide(row(r), dir === "right");
+          else for (let c = 0; c < 4; c++) slide(col(c), dir === "down");
+          const after = cells.map((c) => c.getAttribute("v")).join("");
+          if (before !== after) {
+            addTwo();
+            scoreEl.textContent = score;
+            checkEnd();
+          }
+        }
+
+        document.addEventListener("keyup", (e) => {
+          if (e.key === "ArrowLeft") move("left");
+          else if (e.key === "ArrowRight") move("right");
+          else if (e.key === "ArrowUp") move("up");
+          else if (e.key === "ArrowDown") move("down");
+        });
+        grid.addEventListener(
+          "touchstart",
+          (e) => {
+            const t = e.changedTouches[0];
+            startX = t.clientX;
+            startY = t.clientY;
+          },
+          { passive: false }
+        );
+        grid.addEventListener(
+          "touchend",
+          (e) => {
+            e.preventDefault();
+            const t = e.changedTouches[0],
+              dx = t.clientX - startX,
+              dy = t.clientY - startY;
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 30) return;
+            Math.abs(dx) > Math.abs(dy)
+              ? move(dx > 0 ? "right" : "left")
+              : move(dy > 0 ? "down" : "up");
+          },
+          { passive: false }
+        );
+
+        function showOverlay(ov) {
+          playing = false;
+          ov.style.display = "flex";
+        }
+        btnWin.onclick = btnLose.onclick = () => {
+          ovHide();
+          restart();
+        };
+        function ovHide() {
+          winO.style.display = loseO.style.display = "none";
+        }
+        function restart() {
+          cells.forEach((c) => paint(c, 0));
+          score = 0;
+          scoreEl.textContent = 0;
+          playing = true;
+          addTwo();
+          addTwo();
+        }
+
+        function checkEnd() {
+          if (cells.some((c) => +c.getAttribute("v") === target)) {
+            showOverlay(winO);
+            return;
+          }
+          if (!empties().length) {
+            for (let i = 0; i < 4; i++)
+              for (let j = 0; j < 4; j++) {
+                const v = +cells[i * w + j].getAttribute("v");
+                if (
+                  (j < 3 && v === +cells[i * w + j + 1].getAttribute("v")) ||
+                  (i < 3 && v === +cells[(i + 1) * w + j].getAttribute("v"))
+                )
+                  return;
+              }
+            showOverlay(loseO);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

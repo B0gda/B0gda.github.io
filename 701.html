@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Error 701</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      href="https://fonts.googleapis.com/css?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gap: 8px;
+        --size: 6vmin;
+        --cell: calc(var(--size) + var(--gap));
+        --cols: 7;
+
+        --bg: #172031;
+        --block: #233f5a;
+        --active: #fabc7f;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "VT323", monospace;
+        color: #fff;
+        text-align: center;
+      }
+      h1 {
+        font-size: clamp(24px, 5vw, 40px);
+        margin: 0.2em 0;
+      }
+      #msg {
+        font-size: clamp(14px, 3.2vw, 20px);
+        margin-bottom: 1em;
+        max-width: 90%;
+      }
+      #field {
+        position: relative;
+        width: calc(var(--cols) * var(--cell) - var(--gap));
+        height: calc(10 * var(--cell));
+        border: 4px solid #2f5d83;
+        border-radius: 10px;
+        background: #1f2d3d;
+        overflow: hidden;
+      }
+      .row {
+        --y: 0;
+        position: absolute;
+        display: flex;
+        gap: var(--gap);
+        left: 0;
+        bottom: calc(var(--y) * var(--cell));
+        transition: left 0.04s linear;
+      }
+      .block {
+        width: var(--size);
+        height: var(--size);
+        background: var(--block);
+      }
+      .row.active .block {
+        background: var(--active);
+      }
+      @keyframes flash {
+        0% {
+          background: var(--active);
+          opacity: 1;
+        }
+        50% {
+          background: #fff;
+          transform: scale(1.3);
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.4);
+        }
+      }
+      .block.flash {
+        animation: flash 0.28s ease forwards;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1.2em;
+        background: var(--active);
+        color: #000;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #fff3e0;
+      }
+      .overlay {
+        position: absolute;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.7em;
+        background: rgba(0, 0, 0, 0.45);
+        text-transform: uppercase;
+      }
+      .overlay button {
+        font-family: "VT323", monospace;
+        margin-top: 20px;
+        padding: 0.4em 1.2em;
+        background: var(--active);
+        color: #000;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        transition: background 0.2s, transform 0.1s;
+      }
+      .overlay button:hover {
+        background: #fff3e0;
+        transform: scale(1.05);
+      }
+
+      .overlay.show {
+        display: flex;
+      }
+      .start-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(23, 32, 49, 0.85);
+        z-index: 10;
+      }
+
+      .start-overlay button {
+        font-family: "VT323", monospace;
+        font-size: 3em;
+        padding: 0.6em 1.5em;
+        background: var(--active);
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        color: #000;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        transition: background 0.2s, transform 0.1s;
+      }
+
+      .start-overlay button:hover {
+        background: #fff3e0;
+        transform: scale(1.05);
+      }
+
+      .start-overlay.hide {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Error 701</h1>
+    <p id="msg">Click or press Space to stop the moving row.</p>
+
+    <div id="field"></div>
+    <div class="start-overlay show" id="startOverlay">
+      <button id="startBtn">Start Game</button>
+    </div>
+
+    <div class="overlay" id="lose">
+      Game<br />/Over<br /><button>Try Again</button>
+    </div>
+    <div class="overlay" id="victory">
+      You<br />/Win<br /><button>Play Again</button>
+    </div>
+
+    <script>
+      const COLS = 7;
+      const ROW_COUNT = 10;
+      const PATTERN = [3, 3, 2, 2, 1, 1, 1, 1, 1, 1];
+      const BASE_SPEED = 0.03;
+      const SPEED_FACTOR = 1.1;
+
+      const field = document.getElementById("field");
+      const startBtn = document.getElementById("startBtn");
+      const loseBox = document.getElementById("lose");
+      const winBox = document.getElementById("victory");
+      const msg = document.getElementById("msg");
+
+      let cellPx;
+      let currentRow = 0;
+      let currentWidth = 3;
+      let currentEl = null;
+      let dir = 1;
+      let pos = 0;
+      let speed = BASE_SPEED;
+      let animID = null;
+      let prevStart = 0,
+        prevWidth = COLS;
+      let playing = false;
+
+      function px(v) {
+        return `${v}px`;
+      }
+
+      function calcCell() {
+        const probe = document.createElement("div");
+        probe.className = "block";
+        probe.style.position = "absolute";
+        probe.style.visibility = "hidden";
+        field.appendChild(probe);
+        const size = probe.offsetWidth;
+        const gap =
+          parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue("--gap")
+          ) || 0;
+        cellPx = size + gap;
+        field.removeChild(probe);
+      }
+      calcCell();
+      window.addEventListener("resize", calcCell);
+
+      function createRow(blocks, yIdx) {
+        const r = document.createElement("div");
+        r.className = "row active";
+        r.style.setProperty("--y", yIdx);
+        for (let i = 0; i < blocks; i++) {
+          const b = document.createElement("div");
+          b.className = "block";
+          r.appendChild(b);
+        }
+        field.appendChild(r);
+        return r;
+      }
+
+      function nextRow() {
+        if (currentRow === ROW_COUNT) {
+          winBox.classList.add("show");
+          stopGame();
+          return;
+        }
+        currentWidth = PATTERN[currentRow] ?? 1;
+        if (currentWidth > prevWidth) currentWidth = prevWidth;
+
+        currentEl = createRow(currentWidth, currentRow);
+        dir = 1;
+        pos = 0;
+        currentRow++;
+        speed *= SPEED_FACTOR;
+        animID = requestAnimationFrame(move);
+      }
+
+      function move() {
+        const max = COLS - currentWidth;
+        pos += dir * speed;
+        if (pos >= max || pos <= 0) dir *= -1;
+        currentEl.style.left = px(pos * cellPx);
+        animID = requestAnimationFrame(move);
+      }
+
+      function drop() {
+        cancelAnimationFrame(animID);
+        currentEl.classList.remove("active");
+
+        const snap = Math.round(pos);
+        const start = Math.max(snap, prevStart);
+        const end = Math.min(
+          snap + currentWidth - 1,
+          prevStart + prevWidth - 1
+        );
+        const kept = end - start + 1;
+        const trimLeft = start - snap;
+
+        [...currentEl.children].forEach((blk, i) => {
+          const cell = snap + i;
+          if (cell < start || cell > end) {
+            blk.classList.add("flash");
+            blk.addEventListener("animationend", () => blk.remove(), {
+              once: true,
+            });
+          }
+        });
+
+        if (kept <= 0) {
+          loseBox.classList.add("show");
+          stopGame();
+          return;
+        }
+
+        currentEl.style.left = px(start * cellPx);
+        prevStart = start;
+        prevWidth = kept;
+        nextRow();
+      }
+
+      function startGame() {
+        document.getElementById("startOverlay").classList.add("hide");
+
+        playing = true;
+        field.innerHTML = "";
+        loseBox.classList.remove("show");
+        winBox.classList.remove("show");
+        startBtn.style.display = "none";
+        msg.textContent =
+          "Click or press Space to fix the row. Stack the pyramid!";
+        currentRow = 0;
+        prevStart = 0;
+        prevWidth = COLS;
+        speed = BASE_SPEED;
+        nextRow();
+      }
+
+      function stopGame() {
+        playing = false;
+        cancelAnimationFrame(animID);
+        startBtn.style.display = "";
+        startBtn.textContent = "Play Again";
+        msg.textContent = 'Press "Play Again" to start a new game.';
+      }
+
+      startBtn.addEventListener("click", startGame);
+      document.addEventListener("click", (e) => {
+        if (playing && !e.target.closest("button")) drop();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.code === "Space" && playing) {
+          e.preventDefault();
+          drop();
+        }
+      });
+      [loseBox, winBox].forEach((box) => {
+        box.querySelector("button").addEventListener("click", () => {
+          box.classList.remove("show");
+          startGame();
+        });
+      });
+    </script>
+  </body>
+</html>

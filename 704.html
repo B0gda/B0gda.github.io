@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>Error 704</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #172031;
+        color: #ffe285;
+        font-family: "VT323", monospace;
+        height: 100%;
+        overflow: hidden;
+      }
+      text {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        pointer-events: none;
+      }
+
+      h1,
+      #instruction {
+        position: absolute;
+        top: 8px;
+        left: 16px;
+        margin: 0;
+        font-size: 2rem;
+        color: #ffe285;
+      }
+      #instruction {
+        top: 48px;
+        font-size: 1.2rem;
+        text-shadow: 0 0 5px rgba(255, 255, 100, 0.4);
+      }
+      svg#game {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+      }
+      #score {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2.5rem;
+        color: #ffeb3b;
+        transition: transform 0.2s ease;
+        z-index: 10;
+      }
+      #game-over {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        display: none;
+        z-index: 20;
+      }
+      #game-over h2 {
+        font-size: 3rem;
+        color: #ffe285;
+      }
+      #restart-btn {
+        font-size: 2rem;
+        margin-top: 1rem;
+        padding: 0.5em 1em;
+        background: #ffe285;
+        border: none;
+        color: #172031;
+        cursor: pointer;
+        font-family: "VT323", monospace;
+      }
+      #rotate-warning {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        background: #172031;
+        color: #ffe285;
+        font-size: 1.5em;
+        padding: 2em;
+        text-align: center;
+        inset: 0;
+        justify-content: center;
+        align-items: center;
+      }
+      @media screen and (orientation: portrait) and (max-width: 768px) {
+        #rotate-warning {
+          display: flex;
+        }
+        svg#game,
+        h1,
+        #instruction {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Error 704</h1>
+    <div id="instruction">Draw back an arrow and launch it!</div>
+    <div id="rotate-warning">
+      Please rotate your device to landscape mode to play the game
+    </div>
+    <div id="score">0</div>
+    <div id="game-over">
+      <h2>Game Over</h2>
+      <button id="restart-btn">Again</button>
+    </div>
+    <svg id="game" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400">
+      <defs>
+        <linearGradient id="ArcGradient">
+          <stop offset="0" stop-color="#fff" stop-opacity=".2" />
+          <stop offset="50%" stop-color="#fff" stop-opacity="0" />
+        </linearGradient>
+        <g id="arrow">
+          <line x2="60" fill="none" stroke="#888" stroke-width="2" />
+          <polygon fill="#888" points="64 0 58 2 56 0 58 -2" />
+          <polygon fill="#88ce02" points="2 -3 -4 -3 -1 0 -4 3 2 3 5 0" />
+        </g>
+      </defs>
+
+      <path
+        id="arc"
+        fill="none"
+        stroke="url(#ArcGradient)"
+        stroke-width="4"
+        d="M100,250c62.2,-63.78,124.42,-13.78,186.63,50"
+        pointer-events="none"
+        style="visibility: inherit; opacity: 0"
+      />
+
+      <g class="arrow-angle">
+        <use x="100" y="250" xlink:href="#arrow" />
+      </g>
+
+      <g class="arrows" pointer-events="none"></g>
+
+      <g id="bow" fill="none" stroke-linecap="round" pointer-events="none">
+        <polyline stroke="#ddd" points="88,200 88,250 88,300" />
+        <path
+          stroke="#88ce02"
+          stroke-width="3"
+          d="M88,300 c0-10.1,12-25.1,12-50s-12-39.9-12-50"
+        />
+      </g>
+
+      <g id="target" transform="rotate(5 900 250)">
+        <path
+          fill="#FFF"
+          d="M924.2,274.2c-21.5,21.5-45.9,19.9-52,3.2c-4.4-12.1,2.4-29.2,14.2-41c11.8-11.8,29-18.6,41-14.2 C944.1,228.3,945.7,252.8,924.2,274.2z"
+        />
+        <path
+          fill="#F4531C"
+          d="M915.8,265.8c-14.1,14.1-30.8,14.6-36,4.1c-4.1-8.3,0.5-21.3,9.7-30.5s22.2-13.8,30.5-9.7 C930.4,235,929.9,251.7,915.8,265.8z"
+        />
+        <path
+          fill="#FFF"
+          d="M908.9,258.9c-8,8-17.9,9.2-21.6,3.5c-3.2-4.9-0.5-13.4,5.6-19.5c6.1-6.1,14.6-8.8,19.5-5.6 C918.1,241,916.9,250.9,908.9,258.9z"
+        />
+        <path
+          fill="#F4531C"
+          d="M903.2,253.2c-2.9,2.9-6.7,3.6-8.3,1.7c-1.5-1.8-0.6-5.4,2-8c2.6-2.6,6.2-3.6,8-2 C906.8,246.5,906.1,250.2,903.2,253.2z"
+        />
+      </g>
+
+      <g class="miss" fill="#aaa" opacity="0">
+        <text x="400" y="100" font-size="30">Miss!</text>
+      </g>
+
+      <g class="hit" fill="#ffcc00" opacity="0">
+        <text x="400" y="100" font-size="30">Hit!</text>
+      </g>
+
+      <g class="bullseye" fill="#00ffcc" opacity="0">
+        <text x="400" y="100" font-size="30">Bullseye!</text>
+      </g>
+    </svg>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
+    <script src="//s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin.min.js"></script>
+    <script>
+      let score = 0;
+      let gameActive = true;
+
+      const scoreDisplay = document.getElementById("score");
+      const gameOver = document.getElementById("game-over");
+      const restartBtn = document.getElementById("restart-btn");
+      const bow = document.getElementById("bow");
+      const targetEl = document.getElementById("target");
+
+      let hitCount = 0;
+      let attachedArrows = [];
+
+      function updateScore() {
+        score++;
+        scoreDisplay.textContent = score;
+        if (score === 0) return;
+        scoreDisplay.style.transform = "translateX(-50%) scale(2)";
+        setTimeout(() => {
+          scoreDisplay.style.transform = "translateX(-50%) scale(1)";
+        }, 200);
+
+        hitCount++;
+        animateTarget();
+      }
+
+      function showGameOver() {
+        gameActive = false;
+        gameOver.style.display = "block";
+        TweenMax.to(bow, 0.5, { autoAlpha: 0 });
+      }
+
+      function resetGame() {
+        score = 0;
+        hitCount = 0;
+        gameActive = true;
+        scoreDisplay.textContent = "0";
+        gameOver.style.display = "none";
+        document.querySelector(".arrows").innerHTML = "";
+        TweenMax.set(bow, { autoAlpha: 1 });
+        TweenMax.killTweensOf(targetEl);
+        TweenMax.set(targetEl, { x: 0, y: 0, rotation: 0 });
+        attachedArrows.forEach((arrow) => arrow.remove());
+        attachedArrows = [];
+      }
+
+      restartBtn.addEventListener("click", resetGame);
+
+      const svg = document.querySelector("svg");
+      const cursor = svg.createSVGPoint();
+      const arrows = document.querySelector(".arrows");
+      const pivot = { x: 100, y: 250 };
+      const target = { x: 900, y: 250 };
+      const lineSegment = { x1: 880, y1: 280, x2: 930, y2: 220 };
+
+      let randomAngle = 0;
+
+      function getMouseSVG(e) {
+        if (e.touches) {
+          cursor.x = e.touches[0].clientX;
+          cursor.y = e.touches[0].clientY;
+        } else {
+          cursor.x = e.clientX;
+          cursor.y = e.clientY;
+        }
+        return cursor.matrixTransform(svg.getScreenCTM().inverse());
+      }
+
+      function aim(e) {
+        if (!gameActive) return;
+
+        const p = getMouseSVG(e);
+        p.x = Math.min(p.x, pivot.x - 7);
+        p.y = Math.max(p.y, pivot.y + 7);
+
+        const dx = p.x - pivot.x;
+        const dy = p.y - pivot.y;
+        const angle = Math.atan2(dy, dx) + randomAngle;
+        const bowAngle = angle - Math.PI;
+        const dist = Math.min(Math.hypot(dx, dy), 50);
+        const scale = Math.min(Math.max(dist / 30, 1), 2);
+
+        TweenMax.to("#bow", 0.3, {
+          scaleX: scale,
+          rotation: bowAngle + "rad",
+          transformOrigin: "right center",
+        });
+
+        TweenMax.to(".arrow-angle", 0.3, {
+          rotation: bowAngle + "rad",
+          svgOrigin: "100 250",
+        });
+
+        TweenMax.to(".arrow-angle use", 0.3, { x: -dist });
+
+        const r = dist * 9;
+        const off = { x: Math.cos(bowAngle) * r, y: Math.sin(bowAngle) * r };
+        const arcW = off.x * 3;
+
+        TweenMax.to("#arc", 0.3, {
+          attr: {
+            d: `M100,250c${off.x},${off.y},${arcW - off.x},${
+              off.y + 50
+            },${arcW},50`,
+          },
+          autoAlpha: dist / 60,
+        });
+      }
+
+      function draw(e) {
+        if (!gameActive) return;
+
+        randomAngle = Math.random() * Math.PI * 0.03 - 0.015;
+        TweenMax.to(".arrow-angle use", 0.3, { opacity: 1 });
+
+        if (e.type.startsWith("touch")) {
+          window.addEventListener("touchmove", aim);
+          window.addEventListener("touchend", loose);
+        } else {
+          window.addEventListener("mousemove", aim);
+          window.addEventListener("mouseup", loose);
+        }
+        aim(e);
+      }
+
+      function loose() {
+        window.removeEventListener("mousemove", aim);
+        window.removeEventListener("mouseup", loose);
+        window.removeEventListener("touchmove", aim);
+        window.removeEventListener("touchend", loose);
+
+        TweenMax.to("#bow", 0.4, {
+          scaleX: 1,
+          transformOrigin: "right center",
+          ease: Elastic.easeOut,
+        });
+
+        TweenMax.to("#bow polyline", 0.4, {
+          attr: { points: "88,200 88,250 88,300" },
+          ease: Elastic.easeOut,
+        });
+
+        const newArrow = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "use"
+        );
+        newArrow.setAttributeNS(
+          "http://www.w3.org/1999/xlink",
+          "href",
+          "#arrow"
+        );
+        arrows.appendChild(newArrow);
+
+        const path = MorphSVGPlugin.pathDataToBezier("#arc");
+        TweenMax.to([newArrow], 0.5, {
+          force3D: true,
+          bezier: {
+            type: "cubic",
+            values: path,
+            autoRotate: ["x", "y", "rotation"],
+          },
+          onUpdate: hitTest,
+          onUpdateParams: ["{self}"],
+          onComplete: onMiss,
+          ease: Linear.easeNone,
+        });
+
+        TweenMax.to("#arc", 0.3, { opacity: 0 });
+        TweenMax.set(".arrow-angle use", { opacity: 0 });
+      }
+
+      function hitTest(tween) {
+        const arrow = tween.target[0];
+        const tr = arrow._gsTransform;
+        if (!tr) return;
+
+        const rad = (tr.rotation * Math.PI) / 180;
+        const seg = {
+          x1: tr.x,
+          y1: tr.y,
+          x2: Math.cos(rad) * 60 + tr.x,
+          y2: Math.sin(rad) * 60 + tr.y,
+        };
+
+        const inter = getIntersection(seg, lineSegment);
+        if (inter.segment1 && inter.segment2) {
+          tween.pause();
+
+          const len = 60,
+            depth = 8,
+            offsetX = -9.9;
+          const x = inter.x - Math.cos(rad) * (len - depth) + offsetX;
+          const y = inter.y - Math.sin(rad) * (len - depth);
+          arrow.setAttribute(
+            "transform",
+            `translate(${x},${y}) rotate(${tr.rotation})`
+          );
+          attachedArrows.push(arrow);
+          setTimeout(() => {
+            TweenMax.to(arrow, 0.5, {
+              opacity: 0,
+              onComplete: () => {
+                arrow.remove();
+                attachedArrows = attachedArrows.filter((a) => a !== arrow);
+              },
+            });
+          }, 10);
+          const dx = inter.x - target.x;
+          const dy = inter.y - target.y;
+          const sel = Math.hypot(dx, dy) < 7 ? ".bullseye" : ".hit";
+          showMessage(sel);
+        }
+      }
+
+      function animateTarget() {
+        if (hitCount === 1) startTargetMovement();
+      }
+
+      function startTargetMovement() {
+        const directions = [
+          { x: 30, y: 0 },
+          { x: -120, y: 0 },
+          { x: 0, y: -150 },
+          { x: 20, y: -130 },
+          { x: -150, y: -130 },
+        ];
+        function moveNext() {
+          const { x, y } =
+            directions[Math.floor(Math.random() * directions.length)];
+          TweenMax.to([targetEl, ...attachedArrows], 1, {
+            x: `+=${x}`,
+            y: `+=${y}`,
+            ease: Power1.easeInOut,
+            onComplete: () => {
+              TweenMax.to([targetEl, ...attachedArrows], 1, {
+                x: `-=${x}`,
+                y: `-=${y}`,
+                ease: Power1.easeInOut,
+                onComplete: () => {
+                  setTimeout(moveNext, 300 + Math.random() * 500);
+                },
+              });
+            },
+          });
+        }
+
+        moveNext();
+      }
+
+      function onMiss() {
+        showMessage(".miss");
+      }
+
+      function showMessage(selector) {
+        TweenMax.killTweensOf(selector);
+        TweenMax.killChildTweensOf(selector);
+        TweenMax.set(selector, { autoAlpha: 1 });
+
+        TweenMax.staggerFromTo(
+          selector + " text",
+          0.5,
+          { rotation: -5, scale: 0, transformOrigin: "center" },
+          { scale: 1, ease: Back.easeOut },
+          0.05
+        );
+        TweenMax.staggerTo(
+          selector + " text",
+          0.3,
+          { delay: 2, rotation: 20, scale: 0, ease: Back.easeIn },
+          0.03
+        );
+
+        if (selector === ".bullseye" || selector === ".hit") updateScore();
+        if (selector === ".miss") showGameOver();
+      }
+
+      function getIntersection(s1, s2) {
+        const dx1 = s1.x2 - s1.x1,
+          dy1 = s1.y2 - s1.y1;
+        const dx2 = s2.x2 - s2.x1,
+          dy2 = s2.y2 - s2.y1;
+        const cx = s1.x1 - s2.x1,
+          cy = s1.y1 - s2.y1;
+        const d = dy2 * dx1 - dx2 * dy1;
+        if (!d) return {};
+        const ua = (dx2 * cy - dy2 * cx) / d;
+        const ub = (dx1 * cy - dy1 * cx) / d;
+        return {
+          x: s1.x1 + ua * dx1,
+          y: s1.y1 + ua * dy1,
+          segment1: ua >= 0 && ua <= 1,
+          segment2: ub >= 0 && ub <= 1,
+        };
+      }
+
+      window.addEventListener("mousedown", draw);
+      window.addEventListener("touchstart", draw);
+      aim({ clientX: 320, clientY: 300 });
+    </script>
+  </body>
+</html>

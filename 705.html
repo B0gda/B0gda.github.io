@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Error 705</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #172031;
+        --primary: #ffe285;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        font-family: "Poppins", sans-serif;
+        background: var(--bg);
+        color: var(--primary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+      }
+      h1 {
+        margin: 0.5em 0 0.25em;
+        font-size: clamp(24px, 5vw, 42px);
+        font-family: "VT323", monospace;
+        color: var(--primary);
+      }
+      #instruction {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        color: #ccc;
+      }
+      .wrapper {
+        background: #f8f8f8;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        max-height: 85vh;
+      }
+      .cards {
+        display: grid;
+        gap: 8px;
+        justify-content: center;
+      }
+      .card {
+        width: 120px;
+        height: 120px;
+        list-style: none;
+        cursor: pointer;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        position: relative;
+      }
+      .view {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backface-visibility: hidden;
+        background: #fff;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.25s linear;
+        font-size: 1.5rem;
+      }
+      .back-view img {
+        border-radius: 10px;
+      }
+
+      .front-view {
+        color: #555;
+      }
+      .front-view::before {
+        content: "?";
+      }
+      .back-view {
+        transform: rotateY(-180deg);
+      }
+      .card.flip .back-view {
+        transform: rotateY(0);
+      }
+      .card.flip .front-view {
+        transform: rotateY(180deg);
+      }
+      .card.shake {
+        animation: shake 0.35s ease-in-out;
+      }
+      @keyframes shake {
+        20% {
+          transform: translateX(-13px);
+        }
+        40% {
+          transform: translateX(13px);
+        }
+        60% {
+          transform: translateX(-8px);
+        }
+        80% {
+          transform: translateX(8px);
+        }
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .overlay-content {
+        text-align: center;
+      }
+
+      .overlay-message {
+        font-family: "VT323", monospace;
+        font-size: 3rem;
+        color: #ffe285;
+        margin-bottom: 20px;
+      }
+
+      .overlay-restart-btn {
+        background: #ffe285;
+        border: none;
+        font-family: "VT323", monospace;
+        padding: 10px 20px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      #timer {
+        font-family: "VT323", monospace;
+        font-size: 1.5rem;
+        transition: font-size 0.3s ease;
+      }
+      #timer.big {
+        font-size: 4.5rem;
+      }
+
+      @media (min-width: 1024px) {
+        .cards {
+          grid-template-columns: repeat(8, 1fr);
+          grid-auto-rows: 100px;
+        }
+
+        .card {
+          width: 100px;
+          height: 100px;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .cards {
+          grid-template-columns: repeat(4, 1fr);
+          grid-auto-rows: 80px;
+        }
+
+        .card {
+          width: 80px;
+          height: 80px;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .wrapper {
+          padding: 25px;
+        }
+        #instruction {
+          font-size: 0.85rem;
+        }
+        .cards {
+          grid-template-columns: repeat(4, 1fr);
+          grid-auto-rows: 73px;
+        }
+
+        .card {
+          width: 73px;
+          height: 73px;
+        }
+      }
+      @media (max-width: 375px) {
+        #instruction {
+          font-size: 0.85rem;
+        }
+        .cards {
+          grid-template-columns: repeat(4, 1fr);
+          grid-auto-rows: 70px;
+        }
+
+        .card {
+          width: 65px;
+          height: 65px;
+        }
+      }
+      @media (max-height: 740px) {
+        #instruction {
+          font-size: 0.85rem;
+        }
+        .cards {
+          grid-template-columns: repeat(4, 1fr);
+          grid-auto-rows: 55px;
+        }
+
+        .card {
+          width: 55px;
+          height: 55px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Error 705</h1>
+    <div id="timer">00:00.000</div>
+
+    <div id="instruction">Flip two cards — match all pairs to win!</div>
+
+    <div class="wrapper">
+      <ul class="cards"></ul>
+    </div>
+
+    <div class="overlay" id="winOverlay">
+      <div class="overlay-content">
+        <div class="overlay-message">U WIN</div>
+        <button class="overlay-restart-btn" id="restartGame">Restart</button>
+      </div>
+    </div>
+
+    <script>
+      const iconSet = [
+        "assets/alfa.png",
+        "assets/check.png",
+        "assets/btc.png",
+        "assets/applepay.png",
+        "assets/gazprom.svg",
+        "assets/mtc.jpg",
+        "assets/qiwi.png",
+        "assets/rosselhoz.png",
+        "assets/sber-old.png",
+        "assets/sber.png",
+        "assets/t-bank.png",
+        "assets/tinkoff.jpg",
+        "assets/ozon.jpg",
+        "assets/modul.png",
+        "assets/visa.png",
+        "assets/vtb.png",
+      ];
+
+      const emojiSet = [
+        "🍎",
+        "🍌",
+        "🍇",
+        "🍒",
+        "🍑",
+        "🍍",
+        "🥝",
+        "🍓",
+        "🥥",
+        "🍉",
+        "🍈",
+        "🥕",
+        "🍋",
+        "🥭",
+        "🍆",
+        "🍐",
+      ];
+      const board = document.querySelector(".cards");
+      const winMessage = document.querySelector(".win-message");
+      const restartBtn = document.querySelector(".restart-btn");
+      let matched = 0,
+        cardOne = null,
+        cardTwo = null,
+        disableDeck = false;
+      let startTime, timerInterval;
+      let lastMinute = 0;
+      let fontResetTimeout;
+
+      function startTimer() {
+        startTime = performance.now();
+        timerInterval = setInterval(updateTimer, 50);
+      }
+
+      function updateTimer() {
+        const now = performance.now();
+        const elapsed = now - startTime;
+        const minutes = Math.floor(elapsed / 60000);
+        const seconds = Math.floor((elapsed % 60000) / 1000);
+        const milliseconds = Math.floor(elapsed % 1000);
+
+        const timerEl = document.getElementById("timer");
+        timerEl.textContent = `${String(minutes).padStart(2, "0")}:${String(
+          seconds
+        ).padStart(2, "0")}.${String(milliseconds).padStart(3, "0")}`;
+      }
+      function shuffleBoard() {
+        const isImageMode = iconSet.length === 16;
+        const source = isImageMode ? iconSet : [...emojiSet].slice(0, 16);
+        const full = [...source, ...source].sort(() => Math.random() - 0.5);
+
+        board.innerHTML = full
+          .map(
+            (item) => `
+    <li class="card">
+      <div class="view front-view"></div>
+      <div class="view back-view">
+        ${
+          isImageMode
+            ? `<img src="${item}" style="width: 60%; height: 60%; object-fit: contain; border-radius: 10px;" />`
+            : item
+        }
+      </div>
+    </li>
+  `
+          )
+          .join("");
+
+        const cards = Array.from(board.children);
+        matched = 0;
+        cardOne = cardTwo = null;
+        disableDeck = false;
+
+        cards.forEach((card) => {
+          card.classList.remove("flip", "shake");
+          card.addEventListener("click", flipCard);
+        });
+
+        startTimer();
+      }
+
+      function flipCard() {
+        if (this === cardOne || disableDeck) return;
+        this.classList.add("flip");
+        if (!cardOne) {
+          cardOne = this;
+          return;
+        }
+        cardTwo = this;
+        disableDeck = true;
+
+        const match =
+          cardOne.querySelector(".back-view").innerHTML ===
+          cardTwo.querySelector(".back-view").innerHTML;
+
+        match ? matchedPair() : unflipPair();
+      }
+
+      function matchedPair() {
+        matched++;
+        [cardOne, cardTwo].forEach((c) =>
+          c.removeEventListener("click", flipCard)
+        );
+        [cardOne, cardTwo] = [null, null];
+        disableDeck = false;
+        if (matched === 16) showWin();
+      }
+      function unflipPair() {
+        setTimeout(
+          () => [cardOne, cardTwo].forEach((c) => c.classList.add("shake")),
+          350
+        );
+        setTimeout(() => {
+          [cardOne, cardTwo].forEach((c) =>
+            c.classList.remove("flip", "shake")
+          );
+          [cardOne, cardTwo] = [null, null];
+          disableDeck = false;
+        }, 1200);
+      }
+      function showWin() {
+        clearInterval(timerInterval);
+        const finalTime = document.getElementById("timer").textContent;
+        document.getElementById("winOverlay").style.display = "flex";
+
+        const timeReport = document.createElement("div");
+        timeReport.textContent = `You completed the game in: ${finalTime}`;
+        timeReport.style.fontFamily = "'VT323', monospace";
+        timeReport.style.fontSize = "1.5rem";
+        timeReport.style.color = "#ffe285";
+        timeReport.style.marginTop = "10px";
+
+        document.querySelector(".overlay-content").appendChild(timeReport);
+      }
+
+      document.getElementById("restartGame").addEventListener("click", () => {
+        document.getElementById("winOverlay").style.display = "none";
+        const oldReport = document.querySelector(
+          ".overlay-content div:last-child"
+        );
+        if (
+          oldReport &&
+          oldReport !== document.querySelector(".overlay-message")
+        ) {
+          oldReport.remove();
+        }
+        shuffleBoard();
+      });
+
+      shuffleBoard();
+    </script>
+  </body>
+</html>

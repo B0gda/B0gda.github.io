@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Error 702</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gap: 10px;
+  --size: min(20vw, 12vh);
+  --cell: calc(var(--size) + var(--gap));
+  --bg:#172031;
+  --block:#233f5a;
+  --xclr:#ff6961;
+  --oclr:#ffe285;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'VT323', monospace;
+  color: #fff;
+  text-align: center;
+  padding: 2vh 2vw;
+  box-sizing: border-box;
+}
+h1 {
+  font-size: clamp(24px, 5vw, 40px);
+  margin: .2em 0;
+}
+#msg {
+  font-size: clamp(16px, 4vw, 26px);
+  margin-bottom: 1em;
+}
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell));
+  gap: var(--gap);
+  width: calc(3 * var(--cell) - var(--gap));
+  justify-content: center;
+  margin: 0 auto;
+}
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--block);
+  font-size: calc(var(--size) * 1.1);
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 4px;
+}
+.cell.x { color: var(--xclr); }
+.cell.o { color: var(--oclr); }
+
+@keyframes vortex {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1) rotate(720deg);
+    filter: blur(3px);
+  }
+}
+.vortex {
+  animation: vortex 0.5s ease forwards;
+}
+button {
+  margin-top: 22px;
+  padding: 10px 24px;
+  font-size: 1.2em;
+  background: var(--oclr);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover {
+  background: #fff3e0;
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.2em;
+  background: rgba(0, 0, 0, .45);
+  text-transform: uppercase;
+}
+.overlay button {
+  font-size: .5em;
+  margin-top: 20px;
+}
+.overlay.show {
+  display: flex;
+}
+</style>
+</head>
+<body>
+
+<h1>Error 702</h1>
+<p id="msg">Turn ❌</p>
+
+<div id="board"></div>
+<button id="restart">Play Again</button>
+
+<div class="overlay" id="win"><span id="winText"></span><button>Play Again</button></div>
+
+<script>
+const boardEl   = document.getElementById('board');
+const msgEl     = document.getElementById('msg');
+const restartBt = document.getElementById('restart');
+const winBox    = document.getElementById('win');
+const winText   = document.getElementById('winText');
+
+const WIN_LINES = [
+  [0,1,2],[3,4,5],[6,7,8],
+  [0,3,6],[1,4,7],[2,5,8],
+  [0,4,8],[2,4,6]
+];
+
+let board, movesX, movesO, current, playing;
+
+const initBoard = () => {
+  boardEl.innerHTML = '';
+  for(let i=0;i<9;i++){
+    const cell=document.createElement('div');
+    cell.className='cell';
+    cell.dataset.idx=i;
+    boardEl.appendChild(cell);
+  }
+};
+
+const updateMsg = () => {
+  msgEl.innerHTML = `Turn ${current==='X'?'❌':'⭕'}`;
+};
+
+const flashRemove = idx => {
+  const el = boardEl.children[idx];
+  el.classList.add('vortex');
+  el.addEventListener('animationend', () => {
+    el.className = 'cell';
+    el.textContent = '';
+  }, { once: true });
+};
+
+const checkWin = player => {
+  return WIN_LINES.some(line =>
+    line.every(i => board[i] === player)
+  );
+};
+
+function startGame() {
+  board  = Array(9).fill(null);
+  movesX = [];
+  movesO = [];
+  current= 'X';
+  playing= true;
+  initBoard();
+  updateMsg();
+  winBox.classList.remove('show');
+}
+
+function place(idx) {
+  if (!playing || board[idx]) return;
+
+  const moves = current==='X' ? movesX : movesO;
+  const cls   = current.toLowerCase();
+
+  board[idx] = current;
+  moves.push(idx);
+
+  const cell = boardEl.children[idx];
+  cell.textContent = current;
+  cell.classList.add(cls);
+
+  if (moves.length > 3) {
+    const rm = moves.shift();
+    board[rm] = null;
+    flashRemove(rm);
+  }
+
+  if (moves.length >= 3 && checkWin(current)) {
+    playing = false;
+    winText.textContent = `${current==='X' ? '❌' : '⭕'} wins`;
+    winBox.classList.add('show');
+    return;
+  }
+
+  current = current==='X' ? 'O' : 'X';
+  updateMsg();
+}
+
+boardEl.addEventListener('click', e => {
+  const idx = e.target.dataset.idx;
+  if (idx !== undefined) place(+idx);
+});
+
+restartBt.addEventListener('click', startGame);
+winBox.querySelector('button').addEventListener('click', startGame);
+
+startGame();
+</script>
+</body>
+</html>

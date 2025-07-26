@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Error 703</title>
+  <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #172031;
+      color: white;
+      font-family: 'VT323', monospace;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    h1 {
+      margin: 0.5em 0 0.2em;
+      font-size: clamp(24px, 5vw, 42px);
+      color: #ffe285;
+    }
+    #scoreCounter {
+      font-size: 2em;
+      color: #ffe285;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    
+    .flash {
+      text-shadow: 0 0 10px #ffe285;
+      transform: scale(10);
+    }
+    
+    canvas {
+      display: block;
+      width: 100vw;
+      height: calc(100vh - 160px);
+      background: url('http://s2js.com/img/etc/flappyback.png') no-repeat center center;
+      background-size: cover;
+    }
+    #instruction {
+      font-size: 1.5em;
+      color: #ccc;
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Error 703</h1>
+  <div id="scoreCounter">0</div>
+  <div id="instruction">Click, touch or press any key to flap and avoid the pipes!</div>
+  <canvas id="myCanvas"></canvas>
+
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreCounter = document.getElementById('scoreCounter');
+
+    const FPS = 60;
+    const jump_amount = -10;
+    const max_fall_speed = 10;
+    const acceleration = 1;
+    const pipe_speed = -4;
+    let game_mode = "prestart";
+    let time_game_last_running;
+    let pipes = [];
+    let score = 0;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight - 160;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function MySprite(img_url) {
+      this.x = 0;
+      this.y = 0;
+      this.visible = true;
+      this.velocity_x = 0;
+      this.velocity_y = 0;
+      this.MyImg = new Image();
+      this.MyImg.src = img_url || "";
+      this.angle = 0;
+      this.flipV = false;
+      this.flipH = false;
+    }
+    MySprite.prototype.Do_Frame_Things = function () {
+      ctx.save();
+      ctx.translate(this.x + this.MyImg.width / 2, this.y + this.MyImg.height / 2);
+      ctx.rotate((this.angle * Math.PI) / 180);
+      if (this.flipV) ctx.scale(1, -1);
+      if (this.flipH) ctx.scale(-1, 1);
+      if (this.visible)
+        ctx.drawImage(this.MyImg, -this.MyImg.width / 2, -this.MyImg.height / 2);
+      this.x += this.velocity_x;
+      this.y += this.velocity_y;
+      ctx.restore();
+    };
+
+    function ImagesTouching(thing1, thing2) {
+      if (!thing1.visible || !thing2.visible) return false;
+      return !(
+        thing1.x >= thing2.x + thing2.MyImg.width ||
+        thing1.x + thing1.MyImg.width <= thing2.x ||
+        thing1.y >= thing2.y + thing2.MyImg.height ||
+        thing1.y + thing1.MyImg.height <= thing2.y
+      );
+    }
+
+    function Got_Player_Input(e) {
+      e.preventDefault();
+      if (game_mode === "prestart") {
+        game_mode = "running";
+        score = 0;
+        updateScore();
+      } else if (game_mode === "running") {
+        bird.velocity_y = jump_amount;
+      } else if (game_mode === "over" && new Date() - time_game_last_running > 1000) {
+        reset_game();
+        game_mode = "running";
+      }
+    }
+
+    addEventListener("touchstart", Got_Player_Input, { passive: false });
+    addEventListener("mousedown", Got_Player_Input);
+    addEventListener("keydown", Got_Player_Input);
+
+    function make_bird_slow_and_fall() {
+      if (bird.velocity_y < max_fall_speed) bird.velocity_y += acceleration;
+      if (bird.y > canvas.height - bird.MyImg.height || bird.y < -bird.MyImg.height)
+        game_mode = "over";
+    }
+
+    function add_pipe(x) {
+      const gap = 168;
+      const minTop = 50;
+      const maxTop = canvas.height - gap - 50;
+      const top = Math.floor(Math.random() * (maxTop - minTop + 1)) + minTop;
+
+      const topPipe = new MySprite(pipe_piece.src);
+      topPipe.x = x;
+      topPipe.y = top - pipe_piece.height;
+      topPipe.velocity_x = pipe_speed;
+      pipes.push(topPipe);
+
+      const topPipeExt = new MySprite(pipe_piece.src);
+      topPipeExt.x = x;
+      topPipeExt.y = topPipe.y - pipe_piece.height;
+      topPipeExt.velocity_x = pipe_speed;
+      pipes.push(topPipeExt);
+
+      const bottomPipe = new MySprite(pipe_piece.src);
+      bottomPipe.flipV = true;
+      bottomPipe.x = x;
+      bottomPipe.y = top + gap;
+      bottomPipe.velocity_x = pipe_speed;
+      pipes.push(bottomPipe);
+
+      const bottomPipeExt = new MySprite(pipe_piece.src);
+      bottomPipeExt.flipV = true;
+      bottomPipeExt.x = x;
+      bottomPipeExt.y = bottomPipe.y + pipe_piece.height;
+      bottomPipeExt.velocity_x = pipe_speed;
+      pipes.push(bottomPipeExt);
+    }
+
+    function make_bird_tilt_appropriately() {
+      bird.angle = bird.velocity_y < 0 ? -15 : Math.min(70, bird.angle + 4);
+    }
+
+    function show_pipes() {
+      pipes.forEach(p => p.Do_Frame_Things());
+    }
+
+    function check_for_end_game() {
+      for (let i = 0; i < pipes.length; i++) {
+        if (ImagesTouching(bird, pipes[i])) {
+          game_mode = "over";
+          return;
+        }
+      }
+    }
+
+    function display_intro_instructions() {
+      ctx.font = "25px VT323, monospace";
+      ctx.fillStyle = "#ffe285";
+      ctx.textAlign = "center";
+      ctx.fillText("Press, touch or click to start", canvas.width / 2, canvas.height / 4);
+    }
+
+    function display_game_over() {
+      ctx.font = "30px VT323, monospace";
+      ctx.fillStyle = "#ffe285";
+      ctx.textAlign = "center";
+      ctx.fillText("Game Over", canvas.width / 2, 100);
+    }
+
+    function updateScore() {
+      scoreCounter.textContent = score / 2;
+      if (score === 0) return;
+      scoreCounter.style.transform = 'scale(2)';
+      setTimeout(() => {
+        scoreCounter.style.transform = 'scale(1)';
+      }, 200);
+    }
+
+    function reset_game() {
+      bird.y = canvas.height / 2;
+      bird.angle = 0;
+      pipes = [];
+      score = 0;
+      updateScore();
+      for (let i = 0; i < 10; i++) {
+        add_pipe(500 + i * 410);
+      }
+    }
+
+    function draw_frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      bird.Do_Frame_Things();
+      if (game_mode === "prestart") {
+        display_intro_instructions();
+      } else if (game_mode === "running") {
+        time_game_last_running = new Date();
+        pipes.forEach(p => p.Do_Frame_Things());
+        make_bird_tilt_appropriately();
+        make_bird_slow_and_fall();
+        check_for_end_game();
+        if (pipes.length && pipes[pipes.length - 1].x < canvas.width - 300) {
+          add_pipe(canvas.width + 100);
+        }
+
+        pipes.forEach((p, idx) => {
+          if (!p.counted && !p.flipV && p.x + p.MyImg.width < bird.x) {
+            p.counted = true;
+            score++;
+            updateScore();
+          }
+        });
+      } else if (game_mode === "over") {
+        make_bird_slow_and_fall();
+        display_game_over();
+      }
+    }
+
+    const pipe_piece = new Image();
+    pipe_piece.onload = () => {
+      reset_game();
+      setInterval(draw_frame, 1000 / FPS);
+    };
+    pipe_piece.src = "http://s2js.com/img/etc/flappypipe.png";
+
+    const bird = new MySprite("http://s2js.com/img/etc/flappybird.png");
+    bird.x = 100;
+    bird.y = 200;
+  </script>
+</body>
+</html>
