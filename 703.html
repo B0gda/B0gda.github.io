@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Error 703</title>
   <link href="https://fonts.googleapis.com/css?family=VT323&display=swap" rel="stylesheet">
   <style>
@@ -42,7 +43,7 @@
       display: block;
       width: 100vw;
       height: calc(100vh - 160px);
-      background: url('http://s2js.com/img/etc/flappyback.png') no-repeat center center;
+      background: url('assets/flappyback.png') no-repeat center center;
       background-size: cover;
     }
     #instruction {
@@ -256,9 +257,9 @@
       reset_game();
       setInterval(draw_frame, 1000 / FPS);
     };
-    pipe_piece.src = "http://s2js.com/img/etc/flappypipe.png";
+    pipe_piece.src = "assets/flappypipe.png";
 
-    const bird = new MySprite("http://s2js.com/img/etc/flappybird.png");
+    const bird = new MySprite("assets/flappybird.png");
     bird.x = 100;
     bird.y = 200;
   </script>

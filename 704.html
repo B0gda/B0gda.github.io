@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Error 704</title>
     <link
       href="https://fonts.googleapis.com/css?family=VT323&display=swap"
@@ -347,19 +344,24 @@
         );
         arrows.appendChild(newArrow);
 
-        const path = MorphSVGPlugin.pathDataToBezier("#arc");
-        TweenMax.to([newArrow], 0.5, {
-          force3D: true,
-          bezier: {
-            type: "cubic",
-            values: path,
-            autoRotate: ["x", "y", "rotation"],
-          },
-          onUpdate: hitTest,
-          onUpdateParams: ["{self}"],
-          onComplete: onMiss,
-          ease: Linear.easeNone,
-        });
+setTimeout(() => {
+  const path = MorphSVGPlugin.pathDataToBezier("#arc");
+  if (!path || !path.length) return;
+
+  TweenMax.to([newArrow], 0.5, {
+    force3D: true,
+    bezier: {
+      type: "cubic",
+      values: path,
+      autoRotate: ["x", "y", "rotation"],
+    },
+    onUpdate: hitTest,
+    onUpdateParams: ["{self}"],
+    onComplete: onMiss,
+    ease: Linear.easeNone,
+  });
+}, 50);
+
 
         TweenMax.to("#arc", 0.3, { opacity: 0 });
         TweenMax.set(".arrow-angle use", { opacity: 0 });
@@ -492,6 +494,18 @@
       window.addEventListener("mousedown", draw);
       window.addEventListener("touchstart", draw);
       aim({ clientX: 320, clientY: 300 });
+
+      function handleOrientation() {
+  const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+  document.getElementById("rotate-warning").style.display = isPortrait
+    ? "flex"
+    : "none";
+}
+
+window.addEventListener("resize", handleOrientation);
+window.addEventListener("orientationchange", handleOrientation);
+document.addEventListener("DOMContentLoaded", handleOrientation);
+
     </script>
   </body>
 </html>

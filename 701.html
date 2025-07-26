@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Error 701</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link
       href="https://fonts.googleapis.com/css?family=VT323&display=swap"
       rel="stylesheet"
@@ -160,6 +161,14 @@
       .start-overlay.hide {
         display: none;
       }
+
+
+@media (min-width: 100px) {
+  :root {
+    --size: 10vmin;
+  }
+}
+
     </style>
   </head>
   <body>
@@ -322,8 +331,8 @@
         msg.textContent = 'Press "Play Again" to start a new game.';
       }
 
-      startBtn.addEventListener("click", startGame);
-      document.addEventListener("click", (e) => {
+      startBtn.addEventListener("pointerdown", startGame);
+      document.addEventListener("pointerdown", (e) => {
         if (playing && !e.target.closest("button")) drop();
       });
       document.addEventListener("keydown", (e) => {
@@ -333,7 +342,7 @@
         }
       });
       [loseBox, winBox].forEach((box) => {
-        box.querySelector("button").addEventListener("click", () => {
+        box.querySelector("button").addEventListener("pointerdown", () => {
           box.classList.remove("show");
           startGame();
         });

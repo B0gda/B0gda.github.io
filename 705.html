@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>Error 705</title>
     <link
       href="https://fonts.googleapis.com/css?family=VT323&display=swap"
@@ -346,7 +347,7 @@
 
         cards.forEach((card) => {
           card.classList.remove("flip", "shake");
-          card.addEventListener("click", flipCard);
+          card.addEventListener("pointerdown", flipCard);
         });
 
         startTimer();
@@ -372,7 +373,7 @@
       function matchedPair() {
         matched++;
         [cardOne, cardTwo].forEach((c) =>
-          c.removeEventListener("click", flipCard)
+          c.removeEventListener("pointerdown", flipCard)
         );
         [cardOne, cardTwo] = [null, null];
         disableDeck = false;
@@ -406,7 +407,7 @@
         document.querySelector(".overlay-content").appendChild(timeReport);
       }
 
-      document.getElementById("restartGame").addEventListener("click", () => {
+      document.getElementById("restartGame").addEventListener("pointerdown", () => {
         document.getElementById("winOverlay").style.display = "none";
         const oldReport = document.querySelector(
           ".overlay-content div:last-child"

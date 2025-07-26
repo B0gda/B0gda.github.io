@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width,user-scalable=no" />
-  <script src="https://codepen.io/steveg3003/pen/zBVakw"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   <title>Error 707</title>
@@ -422,7 +422,7 @@
         document.addEventListener("keydown", function (e) {
           if (e.keyCode == 32) _this.onAction();
         });
-        document.addEventListener("click", function (e) {
+        document.addEventListener("pointerdown", function (e) {
           _this.onAction();
         });
         document.addEventListener("touchstart", function (e) {
