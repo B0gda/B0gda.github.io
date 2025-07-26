@@ -76,7 +76,7 @@
                 if (e) {
                     let t = !1;
                     for (let s = 0; s < i.length; s++)
-                        (i[s].slug === e.tab_slug || e.tab_slug.length < 1 || -1 !== e.tab_slug.indexOf("fine-thought")) && (t = !0);
+                        (i[s].slug === e.tab_slug || e.tab_slug.length < 1 || -1 !== e.tab_slug.indexOf("My_CV")) && (t = !0);
                     if (!1 === t) {
                         let t = []
                           , s = parseInt(i.length + 1);

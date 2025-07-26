@@ -3635,7 +3635,7 @@ profile_text: [
                 maxPos: 0
             },
             openTabs: [{
-                title: "fine-thought.js",
+                title: "MY-CV.js",
                 slug: "/",
                 scrollPos: !1,
                 maxScrollPos: !1,
@@ -3749,7 +3749,7 @@ profile_text: [
                 touchFired: !1,
                 siteLoaded: !1,
                 openTabs: [{
-                    title: "fine-thought.js",
+                    title: "My_CV.js",
                     slug: "/",
                     scrollPos: !1,
                     maxScrollPos: !1,
