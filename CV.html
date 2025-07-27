@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Sadriev Bogdan Resume</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css" />
+  <style>
+    @page {
+      size: A4
+    }
+  </style>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      font-size: 7pt;
+      color: #000;
+      text-align: justify;
+    }
+
+    h1 {
+      font-size: 14pt;
+      margin-bottom: 0;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 10pt;
+      margin-bottom: 0;
+      margin-top: 0.8em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #000;
+    }
+
+    h3 {
+      font-size: 8pt;
+      font-weight: bold;
+      margin-bottom: 0;
+    }
+
+    .right-align {
+      float: right;
+      font-weight: normal;
+      text-align: right;
+      display: inline-block;
+      min-width: 160px;
+    }
+
+    p,
+    li {
+      font-size: 8pt;
+      line-height: 1.4;
+      margin: 0.2em 0;
+    }
+
+    ul {
+      padding-left: 3em;
+    }
+
+    .section {
+      margin-top: 1.2em;
+      clear: both;
+    }
+
+    .text-wrap {
+      display: inline-block !important;
+      padding-left: 2em !important;
+    }
+
+    p.text-wrap {
+      margin: 0.05em 0;
+    }
+
+    @media (max-width: 845px) {
+      section.sheet {
+        width: 100% !important;
+        height: auto !important;
+        box-sizing: border-box;
+        overflow-y: auto;
+      }
+
+      body {
+        margin: -20px !important;
+        font-size: 9pt;
+      }
+
+      .A4 {
+        width: auto !important;
+      }
+
+      .right-align {
+        float: none !important;
+        display: block;
+        text-align: left;
+        margin-top: 0.3em;
+      }
+
+      .text-wrap {
+        padding-left: 0 !important;
+        display: block !important;
+      }
+
+      #downloadBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 16px;
+        left: auto;
+        transform: translateY(0);
+        z-index: 9999;
+      }
+
+    }
+
+    #downloadBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #111;
+      color: #f0e6d2;
+      border: none;
+      font-size: 11px;
+      line-height: 1.3;
+      padding: 0.7em 1em;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      z-index: 1000;
+      opacity: 0.85;
+      transition: all 0.2s ease-in-out;
+    }
+
+    #downloadBtn:hover {
+      background: #000;
+      opacity: 1;
+      transform: scale(1.03);
+    }
+
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Georgia', serif;
+      font-size: 14px;
+      color: #222;
+    }
+
+    #loadingOverlay.visible {
+      display: flex;
+    }
+  </style>
+</head>
+
+<body class="A4">
+  <section class="sheet padding-10mm">
+    <h1>Sadriev Bogdan</h1>
+    <p style="text-align: center;">t.me/bogdansadriev • 89376692002 • bogda077077@gmail.com</p>
+
+    <div class="section">
+      <h2>Education</h2>
+      <p><strong>HSE University</strong>: Public research university
+        <span class="right-align">Moscow, Russia<br>09/2024 – 06/2026 (Expected)</span><br>
+        <span class="text-wrap">Master's program “Cybersecurity”</span>
+      </p>
+
+
+      <p><strong>Samara University</strong>: Russian educational, research center for aerospace technologies
+        <span class="right-align">Samara, Russia<br>06/2024</span><br>
+        <span class="text-wrap">02.03.02 Fundamental Informatics and Information Technologies<br>Bachelor's degree
+          (Full-time education)</span>
+      </p>
+
+      <p><strong>SSAU Digital Chairs “IT Project Management”</strong>: Retraining at the Institute of Additional
+        Education of SSAU <span class="right-align">Samara, Russia<br>06/2023</span></p>
+    </div>
+
+    <div class="section">
+      <h2>Supplementary Education</h2>
+      <p><strong>T-Bank (Tinkoff)</strong>: Algorithms and data structures from T-Bank (Tinkoff)
+        <span class="right-align">2024</span><br>
+        <span class="text-wrap">Studying and implementing algorithmic methods to solve various problems</span>
+      </p>
+
+      <p><strong>Udemy</strong>: Industrial Design JavaScript + React
+        <span class="right-align">2023</span><br>
+        <span class="text-wrap">Writing a React application using Styled-components and centralized application state
+          management using Redux with component rendering optimization to improve application performance</span>
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Experience</h2>
+      <h3>T1 Innotech (subsidiary of VTB Bank) <span class="right-align">Moscow, Russia<br>09/2024 - Present</span></h3>
+      <p>SOFTWARE ENGINEER, WEB DESIGNER</p>
+      <ul>
+        <li>Deliver end-to-end web solutions for both internal stakeholders and external clients, shaping responsive UIs
+        </li>
+        <li>Modernised a large legacy code-base by migrating modules into a new React-powered console</li>
+        <li>Designed and supported the PWA / hybrid (Capacitor) infrastructure that powers VTB Lite and other products
+        </li>
+      </ul>
+
+      <h3>Simbisoft <span class="right-align">Samara, Russia<br>07/2023 - 08/2023</span></h3>
+      <p>SOFTWARE ENGINEER</p>
+      <ul>
+        <li>Wrote React components in the style of the specification</li>
+        <li>Tested styles and components on various devices, tested adaptability and cross-browser functionality and
+          configured and used the React Router library</li>
+      </ul>
+
+      <h3>SoftLink <span class="right-align">Samara, Russia<br>02/2023 - 06/2023</span></h3>
+      <p>SOFTWARE ENGINEER</p>
+      <ul>
+        <li>Migrated static HTML website to React with rewriting styles using Styled components</li>
+        <li>Built the project in Webpack</li>
+        <li>Wrote tests for modules and integrations</li>
+        <li>Deployed the project on a hosted platform</li>
+      </ul>
+
+      <h3>Tavolga <span class="right-align">Samara, Russia<br>10/2021 - 11/2021</span></h3>
+      <p>SOFTWARE ENGINEER INTERN</p>
+      <ul>
+        <li>Website layout in figma</li>
+        <li>Integrated Telegram bot for personalized information distribution</li>
+        <li>Customized mailing systems</li>
+        <li>Integrated APIs of third-party services to expand functionality</li>
+      </ul>
+
+      <h3>SE&EN-GROUP <span class="right-align">Aktobe, Kazakhstan<br>02/2020 - 01/2022</span></h3>
+      <p>SOFTWARE ENGINEER, WEB DESIGNER</p>
+      <ul>
+        <li>Developed a website from layouts in Figma, rolled up an adaptive cross-browser site and integrated a
+          telegram bot</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Computer Skills</h2>
+
+      <p><strong>Programming Languages:</strong></p>
+      <p class="text-wrap"><strong>Proficiency:</strong> <br>
+        <span class="text-wrap">
+          React (Node.js, Redux) (6 years), JavaScript/TypeScript (6 years),
+          SQL (5 years), HTML/CSS/jQuery (7 years), Python (5 years), C++ (4 years)
+        </span>
+      </p>
+      <p class="text-wrap"><strong>Experience:</strong> <br>
+        <span class="text-wrap">
+          Solidity smart-contracts (5 years), Java (4 years), Scala (3 year), Go (2 year)
+        </span>
+      </p>
+
+      <p><strong>Cybersecurity:</strong></p>
+      <p class="text-wrap"><strong>Proficiency:</strong> <br>
+        <span class="text-wrap">
+          Threat modeling, system hardening, network analysis, IAM, firewall & IDS configuration (3–5 years)
+        </span>
+      </p>
+      <p class="text-wrap"><strong>Experience:</strong> <br>
+        <span class="text-wrap">
+          SIEM (Splunk, ELK), vulnerability scanning (Nessus, OpenVAS), pentesting (Burp Suite, Metasploit), incident
+          response (3–4 years)
+        </span>
+      </p>
+      <p style="text-align: center; margin-top: 2em; font-size: 8pt;">www.b0gda.github.io</p>
+  </section>
+  <button id="downloadBtn" aria-label="Download PDF">
+    Save<br>PDF
+  </button>
+  <div id="loadingOverlay">Saving PDF...</div>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+  const PRINT_WIDTH = 850;
+  const SCALE = 3;
+  const showOverlay = () => document.getElementById('loadingOverlay')?.classList.add('visible');
+  const hideOverlay = () => document.getElementById('loadingOverlay')?.classList.remove('visible');
+
+  document.getElementById('downloadBtn').addEventListener('click', async () => {
+    const isMobile = window.innerWidth <= PRINT_WIDTH;
+
+    if (isMobile) {
+      const link = document.createElement('a');
+      link.href = 'https://b0gda.github.io/assets/Sadriev_Bogdan_Resume.pdf';
+      link.download = 'Sadriev_Bogdan_Resume.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      return;
+    }
+
+    showOverlay();
+
+    const { jsPDF } = window.jspdf;
+    const section = document.querySelector('section.sheet');
+    const canvas = await html2canvas(section, {
+      scale: SCALE,
+      useCORS: true,
+      backgroundColor: '#fff',
+    });
+
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgHeight = canvas.height * (pageWidth / canvas.width);
+
+    pdf.addImage(canvas, 'JPEG', 0, 0, pageWidth, imgHeight);
+    pdf.save('Sadriev_Bogdan_Resume.pdf');
+
+    hideOverlay();
+  });
+</script>
+
+</html>

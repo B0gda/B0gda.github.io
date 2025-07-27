@@ -216,6 +216,17 @@
                                 }, t))
                             })]
                         }), document.body)
+                    }), (0, s.jsx)("button", {
+                        className: "c-gui__panel__header__button c-gui__panel__header__button--portfolio",
+                    onClick: () => window.open("https://b0gda.github.io/CV.html", "_blank"),
+                    dangerouslySetInnerHTML: {
+                       __html: `
+                        <svg viewBox="0 0 24 24" fill="white" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                       <path d="M6 2a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H13a1 1 0 0 1-1-1V3.5zM8 13h8v1.5H8V13zm0 3h5v1.5H8V16z"/>
+                     </svg>
+                      `
+                   },
+                   "aria-label": "Open portfolio"
                     }), !1 === this.state.lightMode && (0,
                     s.jsx)("button", {
                         className: "c-gui__panel__header__button c-gui__panel__header__button--light-mode",
