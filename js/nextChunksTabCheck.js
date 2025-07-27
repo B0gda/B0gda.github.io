@@ -154,11 +154,11 @@
                 if (isLight) {
                     document.documentElement.classList.remove("state-light-mode");
                     this.setState({ lightMode: false });
-                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#0d0d0d"); // цвет для тёмной темы
+                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#0d0d0d");
                 } else {
                     document.documentElement.classList.add("state-light-mode");
                     this.setState({ lightMode: true });
-                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#ffffff"); // цвет для светлой темы
+                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#fffffe");
                 }
             }
             render() {
