@@ -158,7 +158,7 @@
                 } else {
                     document.documentElement.classList.add("state-light-mode");
                     this.setState({ lightMode: true });
-                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#fffffe");
+                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#eef2f9");
                 }
             }
             render() {
