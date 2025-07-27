@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Error 708</title>
   <link href="https://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet">
@@ -79,6 +78,16 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/class.js/1.0.0/class.min.js"></script>
   <script>
+
+    let lastTouchEnd = 0;
+document.addEventListener('touchend', function(event) {
+  const now = new Date().getTime();
+  if (now - lastTouchEnd <= 300) {
+    event.preventDefault(); // предотвратить двойной тап
+  }
+  lastTouchEnd = now;
+}, false);
+
     /* Simple JavaScript Inheritance
  * By John Resig http://ejohn.org/
  * MIT Licensed.
