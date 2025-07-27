@@ -154,7 +154,7 @@
                 if (isLight) {
                     document.documentElement.classList.remove("state-light-mode");
                     this.setState({ lightMode: false });
-                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#0d0d0d");
+                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#3c3c3c");
                 } else {
                     document.documentElement.classList.add("state-light-mode");
                     this.setState({ lightMode: true });
