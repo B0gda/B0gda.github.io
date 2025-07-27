@@ -950,7 +950,7 @@
                         }), (0,
                         i.jsx)("meta", {
                             name: "viewport",
-                            content: "width=device-width, initial-scale=1, maximum-scale=1, interactive-widget=resizes-content"
+                            content: "width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
                         }), (0,
                         i.jsx)("link", {
                             rel: "icon",
@@ -960,7 +960,7 @@
                         }),(0,
                         i.jsx)("meta", {
                             name: "theme-color",
-                            content: "#ffffff"
+                            content: "#3c3c3c"
                         })]
                     }), (0,
                     i.jsx)(m, {
