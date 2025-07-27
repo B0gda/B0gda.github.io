@@ -149,14 +149,17 @@
                 this.context.setInfoOpen())
             }
             swapColorScheme(e) {
-                e.preventDefault(),
-                document.documentElement.classList.contains("state-light-mode") ? (document.documentElement.classList.remove("state-light-mode"),
-                this.setState({
-                    lightMode: !1
-                })) : (document.documentElement.classList.add("state-light-mode"),
-                this.setState({
-                    lightMode: !0
-                }))
+                e.preventDefault();
+                const isLight = document.documentElement.classList.contains("state-light-mode");
+                if (isLight) {
+                    document.documentElement.classList.remove("state-light-mode");
+                    this.setState({ lightMode: false });
+                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#0d0d0d"); // цвет для тёмной темы
+                } else {
+                    document.documentElement.classList.add("state-light-mode");
+                    this.setState({ lightMode: true });
+                    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", "#ffffff"); // цвет для светлой темы
+                }
             }
             render() {
                 return (0,
